@@ -5,10 +5,19 @@ import modal
 import torchaudio
 import uuid
 from chatterbox.tts_turbo import ChatterboxTurboTTS
+from pathlib import Path
+
+from dotenv import load_dotenv
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(env_path)
 from pydantic import BaseModel
 from typing import Optional
+from pathlib import Path
 app = modal.App("chatterbox-text-to-speech")
 import torch
+# Load env relative to this file so it works regardless of where you run `python` from.
+# env_path = Path(__file__).resolve().parent.parent / ".env"
+# load_dotenv(env_path)
 image=(
     modal.Image.debian_slim(python_version="3.11").pip_install_from_requirements("text-to-speech/requirements.txt").apt_install("ffmpeg")
 )
@@ -36,7 +45,7 @@ class TextToSpeechServer:
         self.model=ChatterboxTurboTTS.from_pretrained(device="cuda")
         
         print("Model loaded successfully")
-    @modal.fastapi_endpoint(method="POST")    
+    @modal.fastapi_endpoint(method="POST",requires_proxy_auth=True)    
     def generate_speech(self,request:TextToSpeechRequest)->TextToSpeechResponse:
         print(f"Recived request to generate speech for: {request.text}")
         with torch.no_grad():
@@ -76,7 +85,14 @@ def main():
         voice_S3_Key="samples/voices/okash.m4a"
     )
     payload=request.model_dump()
-    response=requests.post(endpoint_url,json=payload)
+    
+    headers={
+        "Modal-Key": os.getenv("Modal_Key"),
+        "Modal-Secret": os.getenv("Modal_Secret")
+    }
+   
+
+    response=requests.post(endpoint_url,json=payload,headers=headers)
     response.raise_for_status()
     result=TextToSpeechResponse(**response.json())
 
