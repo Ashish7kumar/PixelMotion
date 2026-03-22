@@ -11,7 +11,14 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-  },
+      MODAL_KEY:z.string(),
+      MODAL_SECRET:z.string(),
+      AWS_ACCESS_KEY_ID:z.string(),
+      AWS_SECRET_ACCESS_KEY_ID:z.string(),
+      AWS_REGION:z.string(),
+      S3_BUCKET_NAME:z.string(),
+      TEXT_TO_SPEECH_ENDPOINT:z.string()
+      },
 
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
