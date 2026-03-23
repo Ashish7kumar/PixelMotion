@@ -17,8 +17,11 @@ export const env = createEnv({
       AWS_SECRET_ACCESS_KEY_ID:z.string(),
       AWS_REGION:z.string(),
       S3_BUCKET_NAME:z.string(),
-      TEXT_TO_SPEECH_ENDPOINT:z.string()
+      TEXT_TO_SPEECH_ENDPOINT:z.string(),
+      GITHUB_CLIENT_ID:z.string(),
+       GITHUB_CLIENT_SECRET:z.string()
       },
+     
 
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
@@ -36,7 +39,15 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    MODAL_KEY:process.env.MODAL_KEY,
+    MODAL_SECRET:process.env.MODAL_SECRET,
+      AWS_ACCESS_KEY_ID:process.env.AWS_ACCESS_KEY_ID,
+      AWS_SECRET_ACCESS_KEY_ID:process.env. AWS_SECRET_ACCESS_KEY_ID,
+      AWS_REGION:process.env.AWS_REGION,
+      S3_BUCKET_NAME:process.env.S3_BUCKET_NAME,
+      TEXT_TO_SPEECH_ENDPOINT:process.env.TEXT_TO_SPEECH_ENDPOINT,
+      GITHUB_CLIENT_ID:process.env.GITHUB_CLIENT_ID,
+       GITHUB_CLIENT_SECRET:process.env.GITHUB_CLIENT_SECRET
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
